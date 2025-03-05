@@ -1,38 +1,96 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './hooks/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
+
+// Public Pages
+import Login from './pages/Login';
+import Register from './pages/Register';
 import About from './pages/About';
+
+// Protected Pages
+import Home from './pages/Home';
 import Profile from './pages/Profile';
-import Matches from './pages/Matches';
-import AutoMatch from './pages/AutoMatch';
-import Following from './pages/Following';
-import Followers from './pages/Followers';
-import Friends from './pages/Friends';
-import Search from './pages/Search';
+import Wingman from './pages/Wingman';
+import Takeoff from './pages/Takeoff';
+import Landing from './pages/Landing';
 
 import './styles/App.css';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/auto-match" element={<AutoMatch />} />
-          <Route path="/following" element={<Following />} />
-          <Route path="/followers" element={<Followers />} />
-          <Route path="/matches" element={<Matches />} />
-          <Route path="/friends" element={<Friends />} /> 
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Navbar />
+          <div className="content">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/about" element={<About />} />
 
+              {/* Protected Routes */}
+              <Route
+                path="/home"
+                element={
+                  <PrivateRoute>
+                    <Home />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/wingman"
+                element={
+                  <PrivateRoute>
+                    <Wingman />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/takeoff"
+                element={
+                  <PrivateRoute>
+                    <Takeoff />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/landing"
+                element={
+                  <PrivateRoute>
+                    <Landing />
+                  </PrivateRoute>
+                }
+              />
 
-        </Routes>
-      </div>
-    </Router>
+              {/* Redirect root to home */}
+              <Route path="/" element={<Navigate to="/home" replace />} />
+
+              {/* Catch all route for 404 */}
+              <Route
+                path="*"
+                element={
+                  <div className="not-found">
+                    <h1>404: Page Not Found</h1>
+                    <p>The page you're looking for doesn't exist.</p>
+                  </div>
+                }
+              />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
