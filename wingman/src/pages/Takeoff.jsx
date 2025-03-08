@@ -8,6 +8,8 @@ function Takeoff() {
         Swipe left or right to switch between individual profiles within the duo.
         Have to select a wingman from your friends list before potential matches will appear.
         Algorithm: Profiles appear based on zip code, age, and gender</h1>
+
+        <h3> Hello Crazy Doese</h3>
     </div>
   );
 }
